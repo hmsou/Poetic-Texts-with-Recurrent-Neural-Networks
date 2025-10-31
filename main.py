@@ -9,3 +9,7 @@ filepath = tf.keras.utils.get_file('shakespeare.txt', 'https://storage.googleapi
 
 text = open(filepath, 'rb').read().decode(encoding='utf-8').lower()
 
+text = text[300000:800000]
+characters = sorted(set(text))
+char_to_index = dict((c, i) for i, c in enumerate(characters))
+index_to_char = dict((i, c) for i, c in enumerate(characters))
