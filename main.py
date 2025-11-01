@@ -37,6 +37,17 @@ model.add(LSTM(120, input_shape=(SEQ_LENGTH, len(characters))))
 model.add(Dense(len(characters)))
 model.add(Activation('softmax'))
 
-model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=0.01))
+# model.compile(loss='categorical_crossentropy', optimizer=RMSprop(learning_rate=0.01))
+# model.fit(x, y, batch_size=256, epochs=4)
+# model.save('textgenerator.keras')
 
-model.fit(x, y, batch_size=256, epochs=4)
+model = tf.keras.models.load_model('textgenerator.keras')
+
+# Helper function
+def sample(preds, temperature=1.0):
+    preds = np.asarray(preds).astype('float64')
+    preds = np.log(preds) / temperature
+    exp_preds = np.exp(preds)
+    preds = exp_preds / np.sum(exp_preds)
+    probas = np.random.multinomial(1, preds, 1)
+    return np.argmax(probas)
