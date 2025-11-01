@@ -32,3 +32,11 @@ for i, sentence in enumerate(sentences):
         x[i, t, char_to_index[character]] = 1
     y[i, char_to_index[next_characters[i]]] = 1
 
+model = Sequential()
+model.add(LSTM(120, input_shape=(SEQ_LENGTH, len(characters))))
+model.add(Dense(len(characters)))
+model.add(Activation('softmax'))
+
+model.compile(loss='categorical_crossentropy', optimizer=RMSprop(lr=0.01))
+
+model.fit(x, y, batch_size=256, epochs=4)
